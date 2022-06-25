@@ -29,7 +29,7 @@ class MainActivity
         // Login & Startup
         await BotClient.LoginAsync(TokenType.Bot, Token, true);
         await BotClient.StartAsync();
-
+        Listener.Start();
         await Task.Delay(-1); // Not Closing Moment.
     }
 
