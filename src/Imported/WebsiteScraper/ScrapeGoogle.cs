@@ -13,9 +13,9 @@ public class ScrapeGoogle : IScrape
     /// <summary>
     /// Try to scrape results of the HTML in the specified URL
     /// </summary>
-    /// <param name="query">The URL of the HTML to try to scrape results from</param>
-    public ScrapeGoogle(string query)
-    { _targetDoc = _htmlWeb.Load(query); _query = query; }
+    /// <param name="website">The URL of the HTML to try to scrape results from</param>
+    public ScrapeGoogle(string url)
+    { _targetDoc = _htmlWeb.Load(url); _query = url; }
     /// <summary>
     /// Scrape Google search.
     /// </summary>
