@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -19,6 +20,7 @@ class MainActivity
 
     internal static async Task Main()
     {
+        Thread Listener = new(async () => await ListenConsole());
         AnsiConsole.MarkupLine($"[yellow underline bold]Loaded Token[/][white]:[/] [red]{Token?.FixMarkup()}[/]");
         BotClient.Log += async logInfo
         => await Task.Run(() => AnsiConsole.MarkupLine($"[yellow underline bold][[Discord.Net Library]][/] -> [grey underline italic]{logInfo.Message.FixMarkup()}[/]"));
@@ -37,8 +39,6 @@ class MainActivity
         while (true)
         {
             string str = Console.ReadLine();
-
-
 
             switch (str)
             {
