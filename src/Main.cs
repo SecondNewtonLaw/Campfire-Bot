@@ -30,4 +30,25 @@ class MainActivity
 
         await Task.Delay(-1); // Not Closing Moment.
     }
+
+    internal static async Task ListenConsole()
+    {
+        CommandBuilder builder = new();
+        while (true)
+        {
+            string str = Console.ReadLine();
+
+
+
+            switch (str)
+            {
+                case "buildcommand":
+                    const ulong srId = 989281484340883566;
+                    AnsiConsole.MarkupLine($"[yellow bold underline][[Command Line Interface]][/] -> [green bold underline]Building commands [[SLASH]] for [yellow underline bold]{srId}[/][/]");
+                    await builder.BuildFor(BotClient.GetGuild(srId));
+                    AnsiConsole.MarkupLine($"[yellow bold underline][[Command Line Interface]][/] -> [green bold underline]Command Building Completed![/] ✅");
+                    break;
+            }
+        }
+    }
 }
