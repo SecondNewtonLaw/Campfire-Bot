@@ -35,7 +35,7 @@ public struct CommandBuilder
             Name = "google",
             Description = "Searchs for things on Google"
         };
-        googleSearchCommand.AddOption("query", ApplicationCommandOptionType.String, "The text you want to search on google", true, true, false);
+        googleSearchCommand.AddOption("query", ApplicationCommandOptionType.String, "The text you want to search on google", true);
 
         commands.Add(pingCommand.Build());
         commands.Add(googleSearchCommand.Build());
