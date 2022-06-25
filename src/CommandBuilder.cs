@@ -30,6 +30,13 @@ public struct CommandBuilder
             Description = "Get the last heartbeat from the Gateway to our bot"
         };
 
+        SlashCommandBuilder googleSearchCommand = new()
+        {
+            Name = "google",
+            Description = "Searchs for things on Google"
+        };
+        googleSearchCommand.AddOption("query", ApplicationCommandOptionType.String, "The text you want to search on google", true, true, false);
+
         commands.Add(pingCommand.Build());
         return commands;
     }

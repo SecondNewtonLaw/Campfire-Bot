@@ -17,6 +17,9 @@ public partial class Handlers
             case "ping":
                 await Commands.PingCommand(cmdSket);
                 break;
+            case "google":
+                await Commands.GetGoogleResults(cmdSket);
+                break;
         }
     }
 }
