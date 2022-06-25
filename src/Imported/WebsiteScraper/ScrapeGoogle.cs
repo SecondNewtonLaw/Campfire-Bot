@@ -71,12 +71,13 @@ public class ScrapeGoogle : IScrape
 
         for (int i = 0; i < hnc_links.Count; i++)
         {
+            try {
             endresult.Add(new()
             {
                 ItemPosition = (uint)i,
                 URL = hnc_links[i].Attributes["href"].Value,
                 Title = hnc_title[i].InnerText
-            });
+            });} catch { continue; }
         }
         return endresult;
     }
