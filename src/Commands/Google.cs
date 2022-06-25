@@ -52,7 +52,7 @@ internal partial class Commands
             {
                 fields.Add(new Discord.EmbedFieldBuilder() { Name = results[i].Title, Value = results[i].URL });
             }
-            await cmdSock.FollowupAsync(embed: new EmbedBuilder() { Title = "Searched \'{usrQuery}\' on google", Fields = fields }.Build());
+            await cmdSock.FollowupAsync(embed: new EmbedBuilder() { Title = $"Searched \'{usrQuery}\' on google", Fields = fields }.Build());
         }
         catch (NoResultsException)
         {
