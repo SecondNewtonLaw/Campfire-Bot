@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -14,8 +17,32 @@ public class ScrapeGoogle : IScrape
     /// Try to scrape results of the HTML in the specified URL
     /// </summary>
     /// <param name="website">The URL of the HTML to try to scrape results from</param>
-    public ScrapeGoogle(string url)
-    { _targetDoc = _htmlWeb.Load(url); _query = url; }
+    public ScrapeGoogle(Uri url)
+    { _targetDoc = _htmlWeb.Load(url); _query = url.ToString(); }
+
+    /// <summary>
+    /// Try to scrape results of the HTML of a google page from the specified query
+    /// </summary>
+    /// <param name="website">The URL of the HTML to try to scrape results from</param>
+    public ScrapeGoogle(string query)
+    {
+        const string GOOGLE_SEARCH_URL = "https://www.google.com/search";
+        FormUrlEncodedContent encodedContent = new(
+            new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("q", query)
+            }
+        );
+
+        _targetDoc = _htmlWeb.Load(
+            new StringBuilder()
+                .Append(GOOGLE_SEARCH_URL)
+                .Append('?')
+                .Append(encodedContent.ReadAsStringAsync().Result).ToString()
+            );
+
+        _query = query;
+    }
     /// <summary>
     /// Scrape Google search.
     /// </summary>
@@ -71,13 +98,16 @@ public class ScrapeGoogle : IScrape
 
         for (int i = 0; i < hnc_links.Count; i++)
         {
-            try {
-            endresult.Add(new()
+            try
             {
-                ItemPosition = (uint)i,
-                URL = hnc_links[i].Attributes["href"].Value,
-                Title = hnc_title[i].InnerText
-            });} catch { continue; }
+                endresult.Add(new()
+                {
+                    ItemPosition = (uint)i,
+                    URL = hnc_links[i].Attributes["href"].Value,
+                    Title = hnc_title[i].InnerText
+                });
+            }
+            catch { }
         }
         return endresult;
     }

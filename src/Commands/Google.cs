@@ -24,8 +24,9 @@ internal partial class Commands
             FormUrlEncodedContent encodedContent = new(
                 new List<KeyValuePair<string, string>>()
                 {
-                new KeyValuePair<string, string>("q", usrQuery)
-                });
+                    new KeyValuePair<string, string>("q", usrQuery)
+                }
+            );
 
             StringBuilder assembler = new(BASE_URL);
 
@@ -55,7 +56,7 @@ internal partial class Commands
             {
                 fields.Add(new Discord.EmbedFieldBuilder() { Name = results[i].Title, Value = results[i].URL });
             }
-            await cmdSock.FollowupAsync(embed: new EmbedBuilder() { Title = $"Searched \'{usrQuery}\' on google", Fields = fields }.Build());
+            await cmdSock.FollowupAsync(embed: new EmbedBuilder() { Title = $"Searched \'{usrQuery}\' on google", Fields = fields, Footer = Extensions.GetTimeFooter() }.Build());
         }
         catch (NoResultsException ex)
         {

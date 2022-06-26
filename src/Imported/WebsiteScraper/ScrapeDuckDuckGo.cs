@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -21,10 +22,14 @@ public class ScrapeHTMLDuckDuckGo : IScrape
     /// <param name="keywords">The keywords to search in duckduckgo HTML</param>
     public ScrapeHTMLDuckDuckGo(string keywords)
     {
-        // replace some chars.
-        Utilities.FixURL(ref keywords, true);
+        FormUrlEncodedContent encodedContent = new(
+            new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("q", keywords),
+            }
+        );
         _query = keywords;
-        _targetDoc = _htmlWeb.Load(string.Format("{0}?q={1}", _site, keywords));
+        _targetDoc = _htmlWeb.Load($"{_site}?{encodedContent.ReadAsStringAsync().Result}");
     }
     /// <summary>
     /// Scrape DuckDuckGo HTML search. Asynchronously

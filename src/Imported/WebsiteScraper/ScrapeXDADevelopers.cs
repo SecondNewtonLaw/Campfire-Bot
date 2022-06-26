@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -13,7 +14,7 @@ public class ScrapeXDADevelopers : IScrape
     };
     private const string _site = "https://forum.xda-developers.com/";
 
-    private const string _searchUrl = "https://forum.xda-developers.com/search/00000000/?q=";
+    private const string _searchUrl = "https://forum.xda-developers.com/search/00000000/";
     private readonly HtmlDocument _targetDoc;
     private readonly string _query;
     /// <summary>
@@ -26,11 +27,21 @@ public class ScrapeXDADevelopers : IScrape
         _query = keywords;
         string relevance;
 
-        if (searchOrder == XDASearchOrder.Date) relevance = "&o=date";
-        else relevance = "&o=relevance";
-        Utilities.FixURL(ref keywords, true);
+        if (searchOrder == XDASearchOrder.Date) relevance = "date";
+        else relevance = "relevance";
 
-        url.Append(_searchUrl).Append(keywords).Append(relevance);
+        FormUrlEncodedContent encodedContent = new(
+            new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("q", keywords),
+                new KeyValuePair<string, string>("o", relevance)
+            }
+        );
+
+        url
+            .Append(_searchUrl)
+            .Append('?')
+            .Append(encodedContent.ReadAsStringAsync().Result);
 
         _targetDoc = _htmlWeb.Load(url.ToString());
     }
