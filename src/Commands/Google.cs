@@ -19,26 +19,7 @@ internal partial class Commands
         string usrQuery = (string)cmdSock.Data.Options.ElementAt(0).Value;
         try
         {
-            #region Assemble URL
-
-            FormUrlEncodedContent encodedContent = new(
-                new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("q", usrQuery)
-                }
-            );
-
-            StringBuilder assembler = new(BASE_URL);
-
-            assembler
-                .Append('?')
-                .Append(await encodedContent.ReadAsStringAsync());
-
-            #endregion Assemble URL
-
-
-
-            ScrapeGoogle scraper = new(assembler.ToString());
+            ScrapeGoogle scraper = new(usrQuery);
 
 
             Task<List<ScrapedSearchResult>> scraperTask = scraper.GetResultsAsync();
@@ -47,7 +28,7 @@ internal partial class Commands
 
             List<EmbedFieldBuilder> fields = new();
             List<ScrapedSearchResult> results = await scraperTask;
-            results.OrderBy(x => x.ItemPosition); // Order elements
+            results = results.OrderBy(x => x.ItemPosition).ToList(); // Order elements
             int addResults = 10;
 
             if (results.Count < 10) addResults = results.Count;
